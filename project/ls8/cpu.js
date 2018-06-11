@@ -80,8 +80,8 @@ class CPU {
 
         // !!! IMPLEMENT ME
         
-        const one = this.ram.read(this.PC + 1);
-        const two = this.ram.read(this.PC + 2);
+        const operandA = this.ram.read(this.PC + 1);
+        const operandB = this.ram.read(this.PC + 2);
 
         // Execute the instruction. Perform the actions for the instruction as
         // outlined in the LS-8 spec.
@@ -93,12 +93,12 @@ class CPU {
 
         switch (IR) {
 						case LDI:
-								// console.log(this.ram.read(one), "ramOne");
-								// console.log(this.ram.read(two), "ramTwo");
-								this.ram.write(one, two);							
+								// console.log(this.ram.read(operandA), "ramOperandA");
+								// console.log(this.ram.read(operandB), "ramOperandB");
+								this.ram.write(operandA, operandB);							
                 break;
             case PRN:
-								console.log(this.ram.read(one));
+								console.log(this.ram.read(operandA));
                 break;
 						case HLT:
                 this.stopClock()
@@ -119,9 +119,9 @@ class CPU {
         // console.log(PRN, "PRN");
         // console.log(HLT, "HLT");
         // console.log(IR, "IR");
-        // console.log(one, "one");
-				// console.log(two, "two");
-				// console.log(this.ram.read(one), "ramOne");
+        // console.log(operandA, "operandA");
+				// console.log(operandB, "operandB");
+				// console.log(this.ram.read(operandA), "ramOperandA");
 				// console.log(this.PC, "PC");
 				this.PC += (IR >> 6) + 1;
     }
