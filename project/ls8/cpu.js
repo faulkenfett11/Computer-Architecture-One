@@ -70,9 +70,10 @@ class CPU {
         // right now.)
 
         // !!! IMPLEMENT ME
+        const IR = this.ram.read(this.PC);
 
         // Debugging output
-        //console.log(`${this.PC}: ${IR.toString(2)}`);
+        console.log(`${this.PC}: ${IR.toString(2)}`);
 
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
