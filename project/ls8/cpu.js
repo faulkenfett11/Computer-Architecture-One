@@ -73,24 +73,57 @@ class CPU {
         const IR = this.ram.read(this.PC);
 
         // Debugging output
-        console.log(`${this.PC}: ${IR.toString(2)}`);
+        // console.log(`${this.PC}: ${IR.toString(2)}`);
 
         // Get the two bytes in memory _after_ the PC in case the instruction
         // needs them.
 
         // !!! IMPLEMENT ME
+        
+        const one = this.ram.read(this.PC + 1);
+        const two = this.ram.read(this.PC + 2);
 
         // Execute the instruction. Perform the actions for the instruction as
         // outlined in the LS-8 spec.
 
         // !!! IMPLEMENT ME
+        const LDI = 0b10011001;
+        const PRN = 0b01000011;
+        const HLT = 0b00000001;
+
+        switch (IR) {
+						case LDI:
+								// console.log(this.ram.read(one), "ramOne");
+								// console.log(this.ram.read(two), "ramTwo");
+								this.ram.write(one, two);							
+                break;
+            case PRN:
+								console.log(this.ram.read(one));
+                break;
+						case HLT:
+                this.stopClock()
+                break;
+            default:
+                console.log(`Nope...something is wrong with ${this.PC}: ${IR.toString(2)}`)
+        }
+
 
         // Increment the PC register to go to the next instruction. Instructions
         // can be 1, 2, or 3 bytes long. Hint: the high 2 bits of the
         // instruction byte tells you how many bytes follow the instruction byte
         // for any particular instruction.
         
-        // !!! IMPLEMENT ME
+				// !!! IMPLEMENT ME
+				
+        // console.log(LDI, "LDI");
+        // console.log(PRN, "PRN");
+        // console.log(HLT, "HLT");
+        // console.log(IR, "IR");
+        // console.log(one, "one");
+				// console.log(two, "two");
+				// console.log(this.ram.read(one), "ramOne");
+				// console.log(this.PC, "PC");
+				this.PC += (IR >> 6) + 1;
     }
 }
 
