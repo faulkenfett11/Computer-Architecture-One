@@ -55,7 +55,8 @@ class CPU {
     alu(op, regA, regB) {
         switch (op) {
             case 'MUL':
-                // !!! IMPLEMENT ME
+								// !!! IMPLEMENT ME
+								return this.reg[regA] * this.reg[regB];
                 break;
         }
     }
@@ -93,12 +94,12 @@ class CPU {
 
         switch (IR) {
 						case LDI:
-								// console.log(this.ram.read(operandA), "ramOperandA");
-								// console.log(this.ram.read(operandB), "ramOperandB");
-								this.ram.write(operandA, operandB);							
+								this.reg[operandA] = operandB;
+								this.PC += 3;						
                 break;
             case PRN:
-								console.log(this.ram.read(operandA));
+								console.log(this.reg[operandA]);
+								this.PC +=2;
                 break;
 						case HLT:
                 this.stopClock()
@@ -121,9 +122,8 @@ class CPU {
         // console.log(IR, "IR");
         // console.log(operandA, "operandA");
 				// console.log(operandB, "operandB");
-				// console.log(this.ram.read(operandA), "ramOperandA");
 				// console.log(this.PC, "PC");
-				this.PC += (IR >> 6) + 1;
+				// this.PC += (IR >> 6) + 1;
     }
 }
 
