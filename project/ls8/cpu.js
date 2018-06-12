@@ -94,12 +94,10 @@ class CPU {
 
         switch (IR) {
 						case LDI:
-								this.reg[operandA] = operandB;
-								this.PC += 3;						
+								this.reg[operandA] = operandB;				
                 break;
             case PRN:
 								console.log(this.reg[operandA]);
-								this.PC +=2;
                 break;
 						case HLT:
                 this.stopClock()
@@ -123,7 +121,7 @@ class CPU {
         // console.log(operandA, "operandA");
 				// console.log(operandB, "operandB");
 				// console.log(this.PC, "PC");
-				// this.PC += (IR >> 6) + 1;
+				this.PC += (IR >> 6) + 1;
     }
 }
 
