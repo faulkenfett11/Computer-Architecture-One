@@ -59,7 +59,8 @@ class CPU {
 								return this.reg[regA] * this.reg[regB];
 								break;
 						default:
-							console.log(`I've got a bad feeling about this.... ${this.PC}: ${IR.toString(2)}`)
+							this.stopClock()
+							break;
         }
     }
 
@@ -99,16 +100,14 @@ class CPU {
 						case LDI:
 								this.reg[operandA] = operandB;				
 								break;
-						case MUL:
-								console.log(this.alu('MUL', operandA, operandB));
             case PRN:
-								console.log(this.reg[operandA], "PRN");
+								console.log(this.reg[operandA]);
                 break;
 						case HLT:
                 this.stopClock()
                 break;
             default:
-                console.log(`Nope...something is wrong with ${this.PC}: ${IR.toString(2)}`)
+                console.log(this.alu('MUL', operandA, operandB));
         }
 
 
