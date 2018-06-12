@@ -57,7 +57,9 @@ class CPU {
             case 'MUL':
 								// !!! IMPLEMENT ME
 								return this.reg[regA] * this.reg[regB];
-                break;
+								break;
+						default:
+							console.log(`I've got a bad feeling about this.... ${this.PC}: ${IR.toString(2)}`)
         }
     }
 
@@ -90,14 +92,17 @@ class CPU {
         // !!! IMPLEMENT ME
         const LDI = 0b10011001;
         const PRN = 0b01000011;
-        const HLT = 0b00000001;
+				const HLT = 0b00000001;
+				const MUL = 0b10101010;
 
         switch (IR) {
 						case LDI:
 								this.reg[operandA] = operandB;				
-                break;
+								break;
+						case MUL:
+								console.log(this.alu('MUL', operandA, operandB));
             case PRN:
-								console.log(this.reg[operandA]);
+								console.log(this.reg[operandA], "PRN");
                 break;
 						case HLT:
                 this.stopClock()
