@@ -16,7 +16,8 @@ class CPU {
         this.reg = new Array(8).fill(0); // General-purpose registers R0-R7
         
         // Special-purpose registers
-        this.PC = 0; // Program Counter
+				this.PC = 0; // Program Counter
+				this.SP = 244;
     }
     
     /**
@@ -95,6 +96,8 @@ class CPU {
         const PRN = 0b01000011;
 				const HLT = 0b00000001;
 				const MUL = 0b10101010;
+				const PUSH = 0b01001101;
+				const POP = 0b01001100;
 
         switch (IR) {
 						case LDI:
@@ -102,11 +105,19 @@ class CPU {
 								break;
             case PRN:
 								console.log(this.reg[operandA]);
-                break;
+								break;
 						case HLT:
-                this.stopClock()
+                this.stopClock();
                 break;
-            default:
+						case PUSH:
+								this.SP--;
+								this.poke(this.SP, this.reg[operandA]);
+								break;
+						case POP:
+								this.reg[operandA] = this.ram.read(this.SP);
+								this.SP++;
+								break;
+						default:
                 console.log(this.alu('MUL', operandA, operandB));
         }
 
