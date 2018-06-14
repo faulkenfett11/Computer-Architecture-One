@@ -58,13 +58,18 @@ class CPU {
         switch (op) {
             case 'MUL':
 								// !!! IMPLEMENT ME
-								return this.reg[regA] * this.reg[regB];
+								return this.reg[regA] *= this.reg[regB];
+								break;
+						case 'ADD':
+								return this.reg[regA] += this.reg[regB];
 								break;
 						default:
 							this.stopClock()
 							break;
         }
-    }
+		}
+		
+
 
     /**
      * Advances the CPU one cycle
@@ -97,8 +102,14 @@ class CPU {
         const PRN = 0b01000011;
 				const HLT = 0b00000001;
 				const MUL = 0b10101010;
+				const ADD = 0b10101000;
 				const PUSH = 0b01001101;
 				const POP = 0b01001100;
+				const CALL = 0b01001000;
+				const RET = 0b00001001;
+			
+
+				this.pcAdvance = true;
 
         switch (IR) {
 						case LDI:
@@ -109,17 +120,33 @@ class CPU {
 								break;
 						case HLT:
                 this.stopClock();
-                break;
+								break;
+						case MUL:
+								this.alu('MUL', operandA, operandB);
+								break;
+						case ADD:
+								this.alu('ADD', operandA, operandB);
+								break;
 						case PUSH:
-							this.reg[SP]--;
+								this.reg[SP]--;
 								this.poke(this.reg[SP], this.reg[operandA]);
+								break;
+						case CALL:
+								this.reg[SP]--;
+								this.ram.write(this.reg[SP], this.PC + 2);
+								this.PC = this.reg[operandA];
+								this.pcAdvance = false;
+								break;
+						case RET:
+								this.PC = this.ram.read(this.reg[SP]);
+								this.pcAdvance = false;
 								break;
 						case POP:
 								this.reg[operandA] = this.ram.read(this.reg[SP]);
 								this.SP++;
 								break;
 						default:
-                console.log(this.alu('MUL', operandA, operandB));
+                console.log(`Wrong at ${this.PC}: ${IR.toString(2)}`);
         }
 
 
@@ -133,12 +160,19 @@ class CPU {
         // console.log(LDI, "LDI");
         // console.log(PRN, "PRN");
         // console.log(HLT, "HLT");
+        // console.log(MUL, "MUL");
         // console.log(IR, "IR");
         // console.log(operandA, "operandA");
 				// console.log(operandB, "operandB");
 				// console.log(this.PC, "PC");
-				this.PC += (IR >> 6) + 1;
-    }
+				if (this.pcAdvance) {
+					this.PC += (IR >> 6) + 1;
+				}
+		}
+		// pushValue(v) {
+		// 	this.reg[SP]--;
+		// 	this.ram.write(this.reg[SP], v)
+		// }
 }
 
 module.exports = CPU;
