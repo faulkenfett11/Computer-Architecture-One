@@ -5,6 +5,8 @@
 /**
  * Class for simulating a simple Computer (CPU & memory)
  */
+const SP = 7;
+
 class CPU {
 
     /**
@@ -14,10 +16,9 @@ class CPU {
         this.ram = ram;
 
         this.reg = new Array(8).fill(0); // General-purpose registers R0-R7
-        
+				this.reg[SP] = 0xf4;
         // Special-purpose registers
 				this.PC = 0; // Program Counter
-				this.SP = 244;
     }
     
     /**
@@ -110,11 +111,11 @@ class CPU {
                 this.stopClock();
                 break;
 						case PUSH:
-								this.SP--;
-								this.poke(this.SP, this.reg[operandA]);
+							this.reg[SP]--;
+								this.poke(this.reg[SP], this.reg[operandA]);
 								break;
 						case POP:
-								this.reg[operandA] = this.ram.read(this.SP);
+								this.reg[operandA] = this.ram.read(this.reg[SP]);
 								this.SP++;
 								break;
 						default:
